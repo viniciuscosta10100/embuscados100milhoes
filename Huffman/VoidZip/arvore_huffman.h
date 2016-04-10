@@ -1,9 +1,7 @@
 
 typedef struct arvore_huffman ArvoreHuff;
 
-ArvoreHuff init();
-
-ArvoreHuff new(char valor, ArvoreHuff *left, ArvoreHuff *right);
+ArvoreHuff newArvore(char valor, ArvoreHuff *left, ArvoreHuff *right);
 
 char * pre_order(ArvoreHuff *root);
 

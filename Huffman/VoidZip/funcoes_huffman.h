@@ -4,3 +4,7 @@
 ArvoreHuff * criarArvore();
 
 HTable * criarHTable();
+
+void compactar();
+
+void descompactar();

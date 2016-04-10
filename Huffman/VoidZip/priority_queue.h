@@ -2,6 +2,8 @@
 
 typedef struct priorityQueue PQueue;
 
+PQueue * initPQueue();
+
 PQueue * enqueue(PQueue *queue, ArvoreHuff *item);
 
 ArvoreHuff * dequeue(PQueue *queue);

@@ -1,4 +1,4 @@
-char * quicksort(char* string);
+void quicksort(char* string);
 
 int setBit(unsigned char c, int i);
 

@@ -4,6 +4,6 @@ typedef struct hashTable HTable;
 
 HTable * initHTable();
 
-HTable * addFrequency(HTable * table, char c, int frequency);
+HTable * addFrequency(HTable * table, char *strOrdenada);
 
 

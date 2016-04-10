@@ -44,8 +44,8 @@ PQueue * enqueue(PQueue *queue, ArvoreHuff *item, int frequencia){
 }
 
 ArvoreHuff * dequeue(PQueue *queue){
-	ArvoreHuff *arvore = queue.inicio;
-	queue.inicio = queue.inicio->next;
+	ArvoreHuff *arvore = queue->inicio->arvore;
+	queue->inicio = queue->inicio->next;
 	return arvore;
 }
 

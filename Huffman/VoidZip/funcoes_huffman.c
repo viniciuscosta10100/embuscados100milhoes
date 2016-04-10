@@ -12,3 +12,11 @@ ArvoreHuff * criarArvore(){
 HTable * criarHTable(){
 	return NULL;
 }
+
+void compactar(){
+
+}
+
+void descompactar(){
+
+}

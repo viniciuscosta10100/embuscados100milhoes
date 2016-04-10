@@ -10,11 +10,7 @@ typedef struct arvore_huffman{
 	struct arvore_huffman *right;
 }ArvoreHuff;
 
-ArvoreHuff * init(){
-	return NULL;
-}
-
-ArvoreHuff * create(char valor, ArvoreHuff *left, ArvoreHuff *right){
+ArvoreHuff * newArvore(char valor, ArvoreHuff *left, ArvoreHuff *right){
 	ArvoreHuff *newTree = (ArvoreHuff*)malloc(sizeof(ArvoreHuff));
 	newTree->valor = valor;
 	newTree->left = left;
