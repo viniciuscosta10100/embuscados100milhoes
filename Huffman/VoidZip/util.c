@@ -51,3 +51,15 @@ void initString(char *s, int tam){
 	for(i=0; i<tam; i++)
 		s[i] = '\0';
 }
+
+void intToBin(char* bin, int num, int bits){
+	int i, k = 0;
+	for(i=bits; i>=0; i--){
+	    k = num >> i;
+	    if(k & 1)
+	      bin[strlen(bin)] = '1';
+	    else
+	      bin[strlen(bin)] = '0';
+	}
+	bin[strlen(bin)] = '\0';
+}

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "util.h"
 #include "hashtable_frequency.h"
 #include "arvore_huffman.h"
@@ -45,6 +46,11 @@ void compactar(char* urlArquivo){
 	initString(arvorePreOrder, 256);
 	pre_order(arvore, arvorePreOrder);
 	printf("%s", arvorePreOrder);
+
+	char *treeTam = (char*)malloc(14*sizeof(char));
+	initString(treeTam,14);
+	intToBin(treeTam,strlen(arvorePreOrder),13);
+	printf("\nbin %s\n", treeTam);
 
 	printf("\nFinalizando");
 	fclose(fp);
