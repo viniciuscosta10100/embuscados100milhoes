@@ -45,3 +45,9 @@ int getBit(unsigned char c, int i){
 	unsigned char mask = 1 << i;
 	return mask & c;
 }
+
+void initString(char *s, int tam){
+	int i;
+	for(i=0; i<tam; i++)
+		s[i] = '\0';
+}

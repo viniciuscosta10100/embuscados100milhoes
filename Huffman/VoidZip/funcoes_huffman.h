@@ -1,10 +1,3 @@
-#include "arvore_huffman.h"
-#include "hashtable_frequency.h"
+void compactar(char* urlArquivo);
 
-ArvoreHuff * criarArvore();
-
-HTable * criarHTable();
-
-void compactar();
-
-void descompactar();
+void descompactar(char* urlArquivo);
