@@ -1,4 +1,6 @@
 #include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 
 #ifndef NULL
 #define NULL   ((void *) 0)
@@ -18,8 +20,12 @@ ArvoreHuff * newArvore(char valor, ArvoreHuff *left, ArvoreHuff *right){
 	return newTree;
 }
 
-char * pre_order(ArvoreHuff *arvore){
-	return NULL;
+void pre_order(ArvoreHuff *arvore, char c[]){
+	if(arvore != NULL){
+		c[strlen(c)] = arvore->valor;
+		pre_order(arvore->left, c);
+		pre_order(arvore->right, c);
+	}
 }
 
 int folha(ArvoreHuff *arvore){

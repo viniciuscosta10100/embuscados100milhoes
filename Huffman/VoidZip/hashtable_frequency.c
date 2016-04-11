@@ -27,12 +27,13 @@ HTable * initHTable(){
 
 PQueue * gerarFilaPrioridade(HTable * table){
 	PQueue *queue;
+	ArvoreHuff *novaArvore;
 	queue = initPQueue();
 	int i;
 	for(i=0; i<TAM_HTABLE; i++){
 		if(table->elementos[i]->frequencia != 0){
-			ArvoreHuff *newArvore = newArvore(table->elementos[i]->letra, NULL, NULL);
-			enqueue(queue, newArvore, table->elementos[i]->frequencia);
+			novaArvore = newArvore(table->elementos[i]->letra, NULL, NULL);
+			enqueue(queue, novaArvore, table->elementos[i]->frequencia);
 		}
 	}
 	return queue;
@@ -54,7 +55,5 @@ HTable * addFrequency(HTable * table, char *strOrdenada){
 		c1 = c;
 	}
 	table->elementos[c1-1]->frequencia += cont;
-	//printf("TABLE::\n");
-	//printTable(table);
 	return table;
 }

@@ -1,8 +1,8 @@
 
 typedef struct arvore_huffman ArvoreHuff;
 
-ArvoreHuff newArvore(char valor, ArvoreHuff *left, ArvoreHuff *right);
+ArvoreHuff * newArvore(char valor, ArvoreHuff *left, ArvoreHuff *right);
 
-char * pre_order(ArvoreHuff *root);
+void pre_order(ArvoreHuff *root, char c[]);
 
 int folha(ArvoreHuff *arvore);

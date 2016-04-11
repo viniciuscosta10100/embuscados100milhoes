@@ -4,8 +4,10 @@ typedef struct priorityQueue PQueue;
 
 PQueue * initPQueue();
 
-PQueue * enqueue(PQueue *queue, ArvoreHuff *item);
+void enqueue(PQueue *queue, ArvoreHuff *item, int frequencia);
 
 ArvoreHuff * dequeue(PQueue *queue);
 
 int unicoElemento(PQueue *queue);
+
+int getPrioridade(PQueue *queue);
