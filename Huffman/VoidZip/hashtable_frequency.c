@@ -1,13 +1,12 @@
 #include <stdlib.h>
 #include <string.h>
-#include "priority_queue.h"
-#include "arvore_huffman.h"
+#include <stdio.h>
 
 #define TAM_HTABLE 256
 typedef struct node{
-	char letra;
+	unsigned char letra;
 	int frequencia;
-	unsigned char huffbin[8];
+	char huffbin[8];
 }Node;
 
 typedef struct hashtable{
@@ -19,41 +18,42 @@ HTable * initHTable(){
 	HTable *hTable = (HTable*)malloc(sizeof(HTable));
 	for(i=0; i<TAM_HTABLE; i++){
 		hTable->elementos[i] = (Node*)malloc(sizeof(Node));
-		hTable->elementos[i]->letra = i+1;
+		hTable->elementos[i]->letra = i;
 		hTable->elementos[i]->frequencia = 0;
 	}
 	return hTable;
 }
 
-PQueue * gerarFilaPrioridade(HTable * table){
-	PQueue *queue;
-	ArvoreHuff *novaArvore;
-	queue = initPQueue();
-	int i;
-	for(i=0; i<TAM_HTABLE; i++){
-		if(table->elementos[i]->frequencia != 0){
-			novaArvore = newArvore(table->elementos[i]->letra, NULL, NULL);
-			enqueue(queue, novaArvore, table->elementos[i]->frequencia);
-		}
-	}
-	return queue;
+int getFrequencia(HTable *table, int posicao){
+	return table->elementos[posicao]->frequencia;
 }
 
-HTable * addFrequency(HTable * table, char *strOrdenada){
-	char c, c1;
-	int cont=0, strSize, i;
-	strSize = strlen(strOrdenada);
+int getTamHTable(){
+	return TAM_HTABLE;
+}
+
+void addFrequency(HTable * table, unsigned char *strOrdenada, int strSize){
+	unsigned char c, c1;
+	int cont=0, i;
 	c1 = strOrdenada[0];
 	for(i=1; i<strSize; i++){
 		c = strOrdenada[i];
-		if(c != c1){
-			table->elementos[c1-1]->frequencia += cont;
+		if(c != c1 && c1>=0){
+			table->elementos[c1]->frequencia += cont;
 			cont = 1;
 		}else{
 			cont++;
 		}
 		c1 = c;
 	}
-	table->elementos[c1-1]->frequencia += cont;
-	return table;
+	table->elementos[c1]->frequencia += cont;
 }
+
+void addCharBits(HTable *table, char c, char *bits){
+	strcpy(table->elementos[(int)c]->huffbin, bits);
+}
+
+char *getCharBits(HTable *table, char c){
+	return table->elementos[(int)c]->huffbin;
+}
+

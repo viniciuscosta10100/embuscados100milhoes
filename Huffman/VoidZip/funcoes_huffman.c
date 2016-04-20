@@ -1,10 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "util.h"
-#include "hashtable_frequency.h"
-#include "arvore_huffman.h"
-
+#include "funcoes_huffman.h"
 
 #ifndef NULL
 #define NULL   ((void *) 0)
@@ -28,34 +22,62 @@ HTable * criarHTable(){
 	return NULL;
 }
 
+PQueue *gerarFilaPrioridade(HTable * table){
+	PQueue *queue;
+	ArvoreHuff *novaArvore;
+	queue = initPQueue();
+	int i;
+	for(i=0; i<getTamHTable(); i++){
+		if(getFrequencia(table, i) != 0){
+			novaArvore = newArvore(i, NULL, NULL);
+			enqueue(queue, novaArvore, getFrequencia(table, i));
+		}
+	}
+	return queue;
+}
+
 void compactar(char* urlArquivo){
 	FILE *fp;
 	HTable *htable = initHTable();
-	char *arvorePreOrder;
-	char buffer[256];
-	fp = fopen(urlArquivo, "r");
-	while(fgets(buffer, 255, fp)){
-		quicksort(buffer);
-		addFrequency(htable, buffer);
+	unsigned char *buffer, *arvorePreOrder;
+	int fpSize;
+
+	fp = fopen(urlArquivo, "rb");
+
+	if (fp == NULL){
+		printf("Problemas na abertura do arquivo\n");
+		return;
 	}
+	fseek (fp , 0 , SEEK_END);
+	fpSize = ftell(fp);
+	rewind(fp);
+	buffer = (unsigned char*) malloc(sizeof(char)*fpSize);
+	fread (buffer, 1, fpSize, fp);
+
+	quicksort(buffer, fpSize);
+	addFrequency(htable, buffer, fpSize);
 
 	PQueue *queue = gerarFilaPrioridade(htable);
 	ArvoreHuff *arvore = criarArvore(queue);
 
-	arvorePreOrder = (char*)malloc(256*sizeof(char));
-	initString(arvorePreOrder, 256);
-	pre_order(arvore, arvorePreOrder);
+	arvorePreOrder = (unsigned char*)malloc(1000*sizeof(char));
+	int tamPreorder = 0;
+	pre_order(arvore, arvorePreOrder, &tamPreorder);
+	arvorePreOrder[tamPreorder] = '\0';
 	printf("%s", arvorePreOrder);
 
 	char *treeTam = (char*)malloc(14*sizeof(char));
-	initString(treeTam,14);
-	intToBin(treeTam,strlen(arvorePreOrder),13);
+	intToBin(treeTam,tamPreorder,13);
 	printf("\nbin %s\n", treeTam);
+
+	preencherBitsHuff(arvore, htable);
+
+	printf("Bits do n: %s\n", getCharBits(htable, 'n'));
 
 	printf("\nFinalizando");
 	fclose(fp);
 }
 
-void descompactar(){
+void descompactar(char* urlArquivo){
 
 }

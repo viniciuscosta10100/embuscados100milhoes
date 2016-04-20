@@ -1,6 +1,7 @@
 #include <string.h>
+#include <stdio.h>
 
-void swap_str(char *a, char *b){
+void swap_str(unsigned char *a, unsigned char *b){
 	if(!a || !b)
 		return;
     char temp = *(a);
@@ -8,7 +9,7 @@ void swap_str(char *a, char *b){
     *(b) = temp;
 }
 
-void f_quicksort(char* string, int inicio, int final){
+void f_quicksort(unsigned char* string, int inicio, int final){
 	int i, j;
 	char pivo;
 	i = inicio;
@@ -31,8 +32,7 @@ void f_quicksort(char* string, int inicio, int final){
 		f_quicksort(string, i, final);
 }
 
-void quicksort(char *string){
-	int tamanho = strlen(string);
+void quicksort(unsigned char *string, int tamanho){
 	f_quicksort(string, 0, tamanho-1);
 }
 
@@ -46,20 +46,22 @@ int getBit(unsigned char c, int i){
 	return mask & c;
 }
 
+int getUniqueBit(unsigned char c, int i){
+	unsigned char mask = c >> i;
+	return mask & 1;
+}
+
 void initString(char *s, int tam){
 	int i;
-	for(i=0; i<tam; i++)
+	for(i=0; i<tam; i++){
 		s[i] = '\0';
+	}
 }
 
 void intToBin(char* bin, int num, int bits){
-	int i, k = 0;
-	for(i=bits; i>=0; i--){
-	    k = num >> i;
-	    if(k & 1)
-	      bin[strlen(bin)] = '1';
-	    else
-	      bin[strlen(bin)] = '0';
+	int i;
+	for(i=0; i<bits; i++){
+		bin[bits-i-1] = getUniqueBit(num,i)+'0';
 	}
 	bin[strlen(bin)] = '\0';
 }
