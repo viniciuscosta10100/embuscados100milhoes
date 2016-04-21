@@ -9,3 +9,9 @@ void pre_order(ArvoreHuff *root, unsigned char c[], int *tam);
 int folha(ArvoreHuff *arvore);
 
 void preencherBitsHuff(ArvoreHuff *arvore, HTable *table);
+
+ArvoreHuff *getLeft(ArvoreHuff *arvore);
+
+ArvoreHuff *getRight(ArvoreHuff *arvore);
+
+unsigned char getValor(ArvoreHuff *arvore);

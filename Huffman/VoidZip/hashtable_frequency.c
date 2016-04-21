@@ -32,6 +32,10 @@ int getTamHTable(){
 	return TAM_HTABLE;
 }
 
+void addCFrequency(HTable *table, unsigned char c){
+	table->elementos[c]->frequencia++;
+}
+
 void addFrequency(HTable * table, unsigned char *strOrdenada, int strSize){
 	unsigned char c, c1;
 	int cont=0, i;
@@ -49,11 +53,11 @@ void addFrequency(HTable * table, unsigned char *strOrdenada, int strSize){
 	table->elementos[c1]->frequencia += cont;
 }
 
-void addCharBits(HTable *table, char c, char *bits){
+void addCharBits(HTable *table, unsigned char c, char *bits){
 	strcpy(table->elementos[(int)c]->huffbin, bits);
 }
 
-char *getCharBits(HTable *table, char c){
+char *getCharBits(HTable *table, unsigned char c){
 	return table->elementos[(int)c]->huffbin;
 }
 

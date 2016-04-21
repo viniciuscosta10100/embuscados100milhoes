@@ -52,8 +52,20 @@ void f_preencherBitsHuff(ArvoreHuff *arvore, HTable *table, char bits[]){
 
 void preencherBitsHuff(ArvoreHuff *arvore, HTable *table){
 	char bits[8];
-	initString(bits, 8);printf("iniciando funcao\n");
+	initString(bits, 8);
 	f_preencherBitsHuff(arvore, table, bits);
+}
+
+ArvoreHuff *getLeft(ArvoreHuff *arvore){
+	return arvore->left;
+}
+
+ArvoreHuff *getRight(ArvoreHuff *arvore){
+	return arvore->right;
+}
+
+unsigned char getValor(ArvoreHuff *arvore){
+	return arvore->valor;
 }
 
 

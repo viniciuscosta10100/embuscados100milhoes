@@ -10,4 +10,6 @@ char *getCharBits(HTable *table, char c);
 
 int getFrequencia(HTable *table, int posicao);
 
+void addCFrequency(HTable *table, unsigned char c);
+
 int getTamHTable();
