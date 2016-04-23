@@ -7,3 +7,5 @@ int getBit(unsigned char c, int i);
 void initString(char *s, int tam);
 
 void intToBin(char* bin, int num, int bits);
+
+int binToInt(char *bin, int tam);

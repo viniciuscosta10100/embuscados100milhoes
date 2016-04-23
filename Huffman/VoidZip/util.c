@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdio.h>
+#include <math.h>
 
 void swap_str(unsigned char *a, unsigned char *b){
 	if(!a || !b)
@@ -64,4 +65,15 @@ void intToBin(char* bin, int num, int bits){
 		bin[bits-i-1] = getUniqueBit(num,i)+'0';
 	}
 	bin[strlen(bin)] = '\0';
+}
+
+int binToInt(char *bin, int tam){
+	int valor = 0;
+	while(tam>0){
+		if(*bin == '1')
+			valor += pow(2,(tam-1));
+		tam--;
+		bin = bin+1;
+	}
+	return valor;
 }

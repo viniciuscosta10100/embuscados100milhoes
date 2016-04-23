@@ -36,100 +36,210 @@ PQueue *gerarFilaPrioridade(HTable * table){
 	return queue;
 }
 
+void escreverBitsArquivo(FILE *arquivo, char *bits, int tam){
+	int i;
+	unsigned char byte = 0;
+	int bitpos = 7;
+	for(i = 0 ; i<tam; i++){
+		if(bits[i] != '0'){
+			byte = setBit(byte, bitpos);
+		}
+		bitpos--;
+		if(bitpos < 0){
+			bitpos = 7;
+			fprintf(arquivo, "%c", byte);
+			byte = 0;
+		}
+	}
+}
+
+
 void compactar(char* urlArquivo){
-	FILE *fp;
+	FILE *arquivoCompactar, *arquivoCompactado;
 	HTable *htable = initHTable();
-	unsigned char *buffer, *arvorePreOrder;
-	int fpSize;
+	unsigned char *buffer;
+	int tamanhoCompactar, i;
 
-	fp = fopen(urlArquivo, "rb");printf("abriu arquivo\n");
+	arquivoCompactar = fopen(urlArquivo, "rb");printf("abriu arquivo\n");
+	arquivoCompactado = fopen("meu-arquivo.huff", "wb");
 
-	if (fp == NULL){
-		printf("Problemas na abertura do arquivo\n");
+	if (arquivoCompactar == NULL || arquivoCompactado == NULL){
+		printf("Problemas na abertura dos arquivos\n");
 		return;
 	}
-	fseek (fp , 0 , SEEK_END);printf("buscou arquivo\n");
-	fpSize = ftell(fp);
-	rewind(fp);
-	buffer = (unsigned char*) malloc(sizeof(char)*fpSize);
-	fread (buffer, 1, fpSize, fp);printf("leu arquivo\n");
+	fseek(arquivoCompactar , 0 , SEEK_END);printf("buscou arquivo\n");
+	tamanhoCompactar = ftell(arquivoCompactar);
+	rewind(arquivoCompactar);
+	buffer = (unsigned char*) malloc(sizeof(char)*tamanhoCompactar);
+	fread(buffer, 1, tamanhoCompactar, arquivoCompactar);printf("leu arquivo\n");
 
-	/*quicksort(buffer, fpSize);
-	addFrequency(htable, buffer, fpSize);*/
-
-	int i;
-	for(i=0; i<fpSize; i++){
+	for(i=0; i<tamanhoCompactar; i++){
 		addCFrequency(htable, buffer[i]);
 	}
 
 	PQueue *queue = gerarFilaPrioridade(htable);
 	ArvoreHuff *arvore = criarArvore(queue);
 
-	arvorePreOrder = (unsigned char*)malloc(1000*sizeof(char));
-	int tamPreorder = 0;
-	pre_order(arvore, arvorePreOrder, &tamPreorder);
-	arvorePreOrder[tamPreorder] = '\0';
-	printf("%s", arvorePreOrder);
+	fprintf(arquivoCompactado, "AA");
 
-	char *treeTam = (char*)malloc(14*sizeof(char));
+	int tamPreorder = 0;
+	pre_order(arvore, arquivoCompactado, &tamPreorder);
+
+	char *treeTam = (char*)malloc(13*sizeof(char));
 	intToBin(treeTam,tamPreorder,13);
 	printf("\nbin %s\n", treeTam);
 
 	preencherBitsHuff(arvore, htable);
 
-	printf("Bits do T: %s\n\n", getCharBits(htable, 'T'));
+	//printf("Bits do T: %s\n\n", getCharBits(htable, 'T'));
 
-
-	//char *bytes_compactado = NULL;
-	FILE *nFile;
 	unsigned char byteLido;
 	unsigned char byte = 0;
 	char *bitshuff;
-	int tamc = 0;
 	int bitpos = 7;
+	int lixoqtd;
 	int j;printf("chegou aqui\n");
-	rewind(fp);
-	nFile = fopen ("myfile.huff","wb");
-	while(fscanf(fp, "%c", &byteLido) > 0){
-		//printf("%s ", getCharBits(htable, byteLido));
+	rewind(arquivoCompactar);
+	while(fscanf(arquivoCompactar, "%c", &byteLido) > 0){
 		bitshuff = getCharBits(htable, byteLido);
 		for(j = 0 ; j<strlen(bitshuff); j++){
 			if(bitshuff[j] != '0'){
 				byte = setBit(byte, bitpos);
 			}
 			bitpos--;
-			if(bitpos < 0){printf("  byte %d\n", byte);
+			if(bitpos < 0){//printf("  byte %d\n", byte);
 				bitpos = 7;
-				fprintf(nFile, "%c", byte);
+				fprintf(arquivoCompactado, "%c", byte);
 				byte = 0;
 			}
-		}printf("  pbyte %d", byte);printf(" -  %c\n", byteLido);
-		tamc += strlen(getCharBits(htable, byteLido));
+		}//printf("  pbyte %d", byte);printf(" -  %c\n", byteLido);
 	}
+	lixoqtd = bitpos+1;
+	if(lixoqtd == 8)
+		lixoqtd = 0;
+	fprintf(arquivoCompactado, "%c", byte);
+
+
+	char *qtdLixo = (char*)malloc(3*sizeof(char));
+	intToBin(qtdLixo,lixoqtd,3);
+	printf("\nlixo %s\n", qtdLixo);
+
+	char inicioCabecalho[16] = "";
+	strcpy(inicioCabecalho, qtdLixo);
+	inicioCabecalho[3] = '\0';
+	strcat(inicioCabecalho, treeTam);
+	inicioCabecalho[16] = '\0';
+	printf("inicio cabecalho: %s\n", inicioCabecalho);
+
+	rewind(arquivoCompactado);
+	escreverBitsArquivo(arquivoCompactado, inicioCabecalho, 16);
+
 	printf("\nFinalizando");
-	fclose(nFile);
-	fclose(fp);
+	fclose(arquivoCompactado);
+	fclose(arquivoCompactar);
 //Descompactar
-	fp = fopen("myfile.huff","rb");
-	nFile = fopen("myfile.png", "wb");
-	ArvoreHuff *a = arvore;printf("\n");
-	while(fscanf(fp, "%c", &byteLido) > 0){
-		for(i=7; i>=0; i--){
-			if(getBit(byteLido, i) == 0){
-				a = getLeft(a);printf("0");}
+	unsigned char *buffer2;
+	int huffsize, m, final;
+	arquivoCompactar = fopen("meu-arquivo.huff","rb");
+	arquivoCompactado = fopen("myfile.txt", "wb");
+	fseek (arquivoCompactar , 0 , SEEK_END);
+	huffsize = ftell(arquivoCompactar);
+	rewind(arquivoCompactar);
+	buffer2 = (unsigned char*) malloc(sizeof(char)*huffsize);
+	fread (buffer2, 1, huffsize, arquivoCompactar);
+
+	ArvoreHuff *a = arvore;//printf("\n");
+	//while(fscanf(fp, "%c", &byteLido) > 0){
+	for(m=0; m<huffsize; m++){
+		if(m == huffsize-1)
+			final = lixoqtd;
+		else
+			final = 0;
+		for(i=7; i>=final; i--){
+			if(getBit(buffer2[m], i) == 0){
+				a = getLeft(a);}//printf("0");}
 			else{
-				a = getRight(a);printf("1");}
+				a = getRight(a);}//printf("1");}
 			if(folha(a)){
-				fprintf(nFile, "%c", getValor(a));printf(" - %c\n", getValor(a));
+				fprintf(arquivoCompactado, "%c", getValor(a));//printf(" - %c\n", getValor(a));
 				a = arvore;
 			}
 		}
 	}
 	printf("\nFinalizando descompactar");
-	fclose(nFile);
-	fclose(fp);
+	fclose(arquivoCompactado);
+	fclose(arquivoCompactar);
 }
 
 void descompactar(char* urlArquivo){
+	int i, j;
+	FILE *arquivoCompactado, *arquivoDescompactado;
+	int tamanhoCompactado, qtdLixo, tamArvore;
+	unsigned char *buffer;
+	char inicioCabecalho[17];
+	ArvoreHuff *arvore, *a;
 
+	arquivoCompactado = fopen(urlArquivo, "rb");
+	arquivoDescompactado = fopen("teste.txt", "wb");
+
+	if (arquivoCompactado == NULL){// || arquivoDescompactado == NULL){
+		printf("Problemas na abertura dos arquivos\n");
+		return;
+	}
+	fseek(arquivoCompactado , 0 , SEEK_END);
+	tamanhoCompactado = ftell(arquivoCompactado);
+	rewind(arquivoCompactado);
+	buffer = (unsigned char*) malloc(sizeof(char)*tamanhoCompactado);
+	fread(buffer, 1, tamanhoCompactado, arquivoCompactado);
+
+	initString(inicioCabecalho, 17);
+	for(i=0; i<2; i++){
+		for(j=7; j>=0; j--){
+			if(getBit(buffer[i], j) == 0)
+				inicioCabecalho[strlen(inicioCabecalho)] = '0';
+			else
+				inicioCabecalho[strlen(inicioCabecalho)] = '1';
+		}
+	}
+	printf("%s\n", inicioCabecalho);
+	qtdLixo = binToInt(inicioCabecalho, 3);
+	tamArvore = binToInt(inicioCabecalho+3, 13);
+
+	printf("Qtd lixo %d\n", qtdLixo);
+	printf("Tam Arvore %d\n", tamArvore);
+
+	unsigned char arvore_preorder[tamArvore];
+	for(i=2; i<tamArvore+2; i++){
+		arvore_preorder[i-2] = buffer[i];
+	}
+
+	printf("\narvore:\n");
+	for(i=0; i<tamArvore; i++){
+		printf("%c", arvore_preorder[i]);
+	}
+	printf("\n");
+
+	arvore = generate_tree(arvore_preorder);pre_order(arvore, NULL, &i);
+	a = arvore;
+
+	int byteFinal;
+	for(i=2+tamArvore; i<tamanhoCompactado; i++){
+		if(i == tamanhoCompactado-1)
+			byteFinal = qtdLixo;
+		else
+			byteFinal = 0;
+		for(j=7; j>=byteFinal; j--){
+			if(getBit(buffer[i], j) == 0)
+				a = getLeft(a);
+			else
+				a = getRight(a);
+			if(folha(a)){
+				fprintf(arquivoDescompactado, "%c", getValor(a));
+				a = arvore;
+			}
+		}
+	}
+	printf("\nFinalizando descompactar");
+	fclose(arquivoCompactado);
+	fclose(arquivoDescompactado);
 }
