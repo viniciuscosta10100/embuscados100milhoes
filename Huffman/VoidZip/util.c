@@ -47,7 +47,7 @@ int getBit(unsigned char c, int i){
 	return mask & c;
 }
 
-int getUniqueBit(unsigned char c, int i){
+int getUniqueBit(unsigned int c, int i){
 	unsigned char mask = c >> i;
 	return mask & 1;
 }

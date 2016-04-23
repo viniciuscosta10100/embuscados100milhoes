@@ -1,15 +1,26 @@
 #include "funcoes_huffman.h"
 
 int main(){
-	//compactar("tmp/teste.txt");
-	descompactar("meu-arquivo.huff");
-	/*unsigned char c[100] = "****in *I*zA**O*Ta***BC*DE**NS*bg";
-	int tam=0;
-	//scanf("%s", c);
-	ArvoreHuff *a = generate_tree(c);
-	printf("%c", getValor(getLeft(getRight(a))));
-	printf("\npreorder again\n");
-	pre_order(a, NULL, &tam);*/
-	//printf("%d",binToInt("11111111", 8));
+	int opcao;
+	char endereco[50];
+	printf("1- Compactar\n2- Descompactar\nOpc: ");
+	scanf("%d", &opcao);
+	switch(opcao){
+		case 1:
+			printf("Digite o endereco do arquivo a ser compactado: ");
+			scanf("%s", endereco);
+			compactar(endereco);
+			break;
+		case 2:
+			printf("Digite o endereco do arquivo .huff: ");
+			scanf("%s", endereco);
+			descompactar(endereco);
+			break;
+		default:
+			printf("Opcao invalida!");
+			break;
+	}
+	//compactar("tmp/oi.txt");
+	//descompactar("meu-arquivo.huff");
 	return 0;
 }

@@ -60,18 +60,18 @@ void compactar(char* urlArquivo){
 	unsigned char *buffer;
 	int tamanhoCompactar, i;
 
-	arquivoCompactar = fopen(urlArquivo, "rb");printf("abriu arquivo\n");
+	arquivoCompactar = fopen(urlArquivo, "rb");
 	arquivoCompactado = fopen("meu-arquivo.huff", "wb");
 
 	if (arquivoCompactar == NULL || arquivoCompactado == NULL){
 		printf("Problemas na abertura dos arquivos\n");
 		return;
 	}
-	fseek(arquivoCompactar , 0 , SEEK_END);printf("buscou arquivo\n");
+	fseek(arquivoCompactar , 0 , SEEK_END);
 	tamanhoCompactar = ftell(arquivoCompactar);
 	rewind(arquivoCompactar);
 	buffer = (unsigned char*) malloc(sizeof(char)*tamanhoCompactar);
-	fread(buffer, 1, tamanhoCompactar, arquivoCompactar);printf("leu arquivo\n");
+	fread(buffer, 1, tamanhoCompactar, arquivoCompactar);
 
 	for(i=0; i<tamanhoCompactar; i++){
 		addCFrequency(htable, buffer[i]);
@@ -89,9 +89,9 @@ void compactar(char* urlArquivo){
 	intToBin(treeTam,tamPreorder,13);
 	printf("\nbin %s\n", treeTam);
 
-	preencherBitsHuff(arvore, htable);
+	printf("tamanho arvore %d\n", tamPreorder);
 
-	//printf("Bits do T: %s\n\n", getCharBits(htable, 'T'));
+	preencherBitsHuff(arvore, htable);
 
 	unsigned char byteLido;
 	unsigned char byte = 0;
@@ -107,24 +107,26 @@ void compactar(char* urlArquivo){
 				byte = setBit(byte, bitpos);
 			}
 			bitpos--;
-			if(bitpos < 0){//printf("  byte %d\n", byte);
+			if(bitpos < 0){
 				bitpos = 7;
 				fprintf(arquivoCompactado, "%c", byte);
 				byte = 0;
 			}
-		}//printf("  pbyte %d", byte);printf(" -  %c\n", byteLido);
+		}
 	}
 	lixoqtd = bitpos+1;
 	if(lixoqtd == 8)
 		lixoqtd = 0;
-	fprintf(arquivoCompactado, "%c", byte);
+	else
+		fprintf(arquivoCompactado, "%c", byte);
 
 
-	char *qtdLixo = (char*)malloc(3*sizeof(char));
+	char *qtdLixo = (char*)malloc(4*sizeof(char));
 	intToBin(qtdLixo,lixoqtd,3);
+	qtdLixo[3] = '\0';
 	printf("\nlixo %s\n", qtdLixo);
 
-	char inicioCabecalho[16] = "";
+	char inicioCabecalho[17] = "";
 	strcpy(inicioCabecalho, qtdLixo);
 	inicioCabecalho[3] = '\0';
 	strcat(inicioCabecalho, treeTam);
@@ -137,38 +139,7 @@ void compactar(char* urlArquivo){
 	printf("\nFinalizando");
 	fclose(arquivoCompactado);
 	fclose(arquivoCompactar);
-//Descompactar
-	unsigned char *buffer2;
-	int huffsize, m, final;
-	arquivoCompactar = fopen("meu-arquivo.huff","rb");
-	arquivoCompactado = fopen("myfile.txt", "wb");
-	fseek (arquivoCompactar , 0 , SEEK_END);
-	huffsize = ftell(arquivoCompactar);
-	rewind(arquivoCompactar);
-	buffer2 = (unsigned char*) malloc(sizeof(char)*huffsize);
-	fread (buffer2, 1, huffsize, arquivoCompactar);
 
-	ArvoreHuff *a = arvore;//printf("\n");
-	//while(fscanf(fp, "%c", &byteLido) > 0){
-	for(m=0; m<huffsize; m++){
-		if(m == huffsize-1)
-			final = lixoqtd;
-		else
-			final = 0;
-		for(i=7; i>=final; i--){
-			if(getBit(buffer2[m], i) == 0){
-				a = getLeft(a);}//printf("0");}
-			else{
-				a = getRight(a);}//printf("1");}
-			if(folha(a)){
-				fprintf(arquivoCompactado, "%c", getValor(a));//printf(" - %c\n", getValor(a));
-				a = arvore;
-			}
-		}
-	}
-	printf("\nFinalizando descompactar");
-	fclose(arquivoCompactado);
-	fclose(arquivoCompactar);
 }
 
 void descompactar(char* urlArquivo){

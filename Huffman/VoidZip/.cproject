@@ -16,7 +16,7 @@
 					<folderInfo id="cdt.managedbuild.config.gnu.mingw.exe.debug.920688256." name="/" resourcePath="">
 						<toolChain id="cdt.managedbuild.toolchain.gnu.mingw.base.625947285" name="MinGW GCC" superClass="cdt.managedbuild.toolchain.gnu.mingw.base">
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.PE" id="cdt.managedbuild.target.gnu.platform.mingw.base.634337241" name="Debug Platform" osList="win32" superClass="cdt.managedbuild.target.gnu.platform.mingw.base"/>
-							<builder buildPath="${workspace_loc:/VoidZip}/Debug" id="org.eclipse.cdt.build.core.internal.builder.275431235" superClass="org.eclipse.cdt.build.core.internal.builder"/>
+							<builder buildPath="${workspace_loc:/VoidZip}/Debug" id="org.eclipse.cdt.build.core.internal.builder.275431235" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="org.eclipse.cdt.build.core.internal.builder"/>
 							<tool id="cdt.managedbuild.tool.gnu.assembler.mingw.base.1546807392" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.mingw.base">
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1173487283" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
@@ -31,6 +31,7 @@
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1984895888" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.mingw.base.335888368" name="MinGW C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.mingw.base">
+								<option id="gnu.c.link.option.ldflags.655505655" superClass="gnu.c.link.option.ldflags" value="-static" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.linker.input.2089714405" superClass="cdt.managedbuild.tool.gnu.c.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
