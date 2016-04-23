@@ -1,41 +1,4 @@
-#include <string.h>
-#include <stdio.h>
-#include <math.h>
-
-void swap_str(unsigned char *a, unsigned char *b){
-	if(!a || !b)
-		return;
-    char temp = *(a);
-    *(a) = *(b);
-    *(b) = temp;
-}
-
-void f_quicksort(unsigned char* string, int inicio, int final){
-	int i, j;
-	char pivo;
-	i = inicio;
-	j = final;
-	pivo = string[(i+j)/2];
-	while(i <= j){
-		while(string[i] < pivo && i < final)
-			i++;
-		while(string[j] > pivo && j > inicio)
-			j--;
-		if(i <= j){
-			swap_str(string+i, string+j);
-			i++;
-			j--;
-		}
-	}
-	if(j > inicio)
-		f_quicksort(string, inicio, j);
-	if(i < final)
-		f_quicksort(string, i, final);
-}
-
-void quicksort(unsigned char *string, int tamanho){
-	f_quicksort(string, 0, tamanho-1);
-}
+#include "util.h"
 
 int setBit(unsigned char c, int i){
 	unsigned char mask = 1 << i;
@@ -76,4 +39,21 @@ int binToInt(char *bin, int tam){
 		bin = bin+1;
 	}
 	return valor;
+}
+
+void escreverBitsArquivo(FILE *arquivo, char *bits, int tam){
+	int i;
+	unsigned char byte = 0;
+	int bitpos = 7;
+	for(i = 0 ; i<tam; i++){
+		if(bits[i] != '0'){
+			byte = setBit(byte, bitpos);
+		}
+		bitpos--;
+		if(bitpos < 0){
+			bitpos = 7;
+			fprintf(arquivo, "%c", byte);
+			byte = 0;
+		}
+	}
 }

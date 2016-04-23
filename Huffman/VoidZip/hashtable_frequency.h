@@ -1,12 +1,13 @@
-typedef struct hashTable HTable;
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct hashtable HTable;
 
 HTable * initHTable();
 
-void addFrequency(HTable * table, unsigned char *strOrdenada, int strSize);
+void addCharBits(HTable *table, unsigned char c, char *bits);
 
-void addCharBits(HTable *table, char c, char *bits);
-
-char *getCharBits(HTable *table, char c);
+char *getCharBits(HTable *table, unsigned char c);
 
 int getFrequencia(HTable *table, int posicao);
 

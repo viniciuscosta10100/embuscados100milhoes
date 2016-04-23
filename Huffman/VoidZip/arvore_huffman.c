@@ -27,53 +27,24 @@ int folha(ArvoreHuff *arvore){
 }
 
 void pre_order(ArvoreHuff *arvore, FILE *arquivo, int *tam){
-	if(arvore != NULL){
-		if((arvore->valor == '*' && folha(arvore)) || arvore->valor == '\\'){
-			fprintf(arquivo, "\\");
-			printf("\\");
-			*tam = *tam + 1;
-		}
-		fprintf(arquivo, "%c", arvore->valor);
-		printf("%c", arvore->valor);
-		*tam = *tam + 1;
-		pre_order(arvore->left, arquivo, tam);
-		pre_order(arvore->right, arquivo, tam);
-	}
-}
-
-void f_preencherBitsHuff(ArvoreHuff *arvore, HTable *table, char bits[]){
-	if(arvore != NULL){
-		if(folha(arvore)){
-			addCharBits(table, arvore->valor, bits);
+	if(arvore != NULL){//printf("%c - %d  %d", arvore->valor,arvore->valor,folha(arvore));system("pause");
+		if(arvore->valor == 13){
+			fprintf(arquivo, "\\&");
+			//printf("\\&");
+			*tam = *tam + 2;
 		}else{
-			int bitsLength = strlen(bits);
-			bits[bitsLength] = '0';
-			bits[bitsLength+1] = '\0';
-			f_preencherBitsHuff(arvore->left, table, bits);
-			bits[bitsLength] = '1';
-			bits[bitsLength+1] = '\0';
-			f_preencherBitsHuff(arvore->right, table, bits);
+			if((arvore->valor == 42 && folha(arvore)) || arvore->valor == '\\'){
+				fprintf(arquivo, "\\");
+				//printf("\\");
+				*tam = *tam + 1;
+			}
+			fprintf(arquivo, "%c", arvore->valor);
+			//printf("%c", arvore->valor);
+			*tam = *tam + 1;
+			pre_order(arvore->left, arquivo, tam);
+			pre_order(arvore->right, arquivo, tam);
 		}
 	}
-
-}
-
-void preencherBitsHuff(ArvoreHuff *arvore, HTable *table){
-	char bits[8];
-	initString(bits, 8);
-	f_preencherBitsHuff(arvore, table, bits);
-}
-
-ArvoreHuff *getLeft(ArvoreHuff *arvore){
-	return arvore->left;
-}
-
-ArvoreHuff *getRight(ArvoreHuff *arvore){
-	return arvore->right;
-}
-
-unsigned char getValor(ArvoreHuff *arvore){
-	return arvore->valor;
 }
 
 ArvoreHuff *f_generate_tree(){
@@ -87,7 +58,10 @@ ArvoreHuff *f_generate_tree(){
 	}else{
 		if(*preorder_string == '\\'){
 			preorder_string = preorder_string+1;
-			return newArvore(*preorder_string,NULL,NULL);
+			if(*preorder_string == '&')
+				return newArvore(13,NULL,NULL);
+			else
+				return newArvore(*preorder_string,NULL,NULL);
 		}else
 			return newArvore(*preorder_string,NULL,NULL);
 	}
@@ -96,4 +70,16 @@ ArvoreHuff *f_generate_tree(){
 ArvoreHuff *generate_tree(unsigned char *preorder){
 	preorder_string = preorder;
 	return f_generate_tree();
+}
+
+ArvoreHuff *getLeft(ArvoreHuff *arvore){
+	return arvore->left;
+}
+
+ArvoreHuff *getRight(ArvoreHuff *arvore){
+	return arvore->right;
+}
+
+unsigned char getValor(ArvoreHuff *arvore){
+	return arvore->valor;
 }

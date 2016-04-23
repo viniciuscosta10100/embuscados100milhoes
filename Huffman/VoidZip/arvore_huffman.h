@@ -1,4 +1,3 @@
-#include "hashtable_frequency.h"
 #include <stdio.h>
 
 typedef struct arvore_huffman ArvoreHuff;
@@ -9,12 +8,10 @@ void pre_order(ArvoreHuff *root, FILE *arquivo, int *tam);
 
 int folha(ArvoreHuff *arvore);
 
-void preencherBitsHuff(ArvoreHuff *arvore, HTable *table);
+ArvoreHuff *generate_tree(unsigned char *preorder);
 
 ArvoreHuff *getLeft(ArvoreHuff *arvore);
 
 ArvoreHuff *getRight(ArvoreHuff *arvore);
 
 unsigned char getValor(ArvoreHuff *arvore);
-
-ArvoreHuff *generate_tree(unsigned char *preorder);

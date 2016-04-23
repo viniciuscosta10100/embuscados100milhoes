@@ -1,5 +1,4 @@
-#include <stdlib.h>
-#include "arvore_huffman.h"
+#include "priority_queue.h"
 
 typedef struct node{
 	int prioridade;
@@ -12,7 +11,11 @@ typedef struct priority_queue{
 	Node *fim;
 }PQueue;
 
-PQueue * initPQueue(){
+int unicoElemento(PQueue *queue){
+	return (queue->inicio->next == NULL);
+}
+
+PQueue *initPQueue(){
 	PQueue *queue = (PQueue*)malloc(sizeof(PQueue));
 	queue->inicio = NULL;
 	queue->fim = NULL;
@@ -45,11 +48,7 @@ void enqueue(PQueue *queue, ArvoreHuff *item, int frequencia){
 	}
 }
 
-int unicoElemento(PQueue *queue){
-	return (queue->inicio->next == NULL);
-}
-
-ArvoreHuff * dequeue(PQueue *queue){
+ArvoreHuff *dequeue(PQueue *queue){
 	ArvoreHuff *arvore = queue->inicio->arvore;
 	Node *aux = queue->inicio;
 	if(unicoElemento(queue))
@@ -62,5 +61,4 @@ ArvoreHuff * dequeue(PQueue *queue){
 int getPrioridade(PQueue *queue){
 	return queue->inicio->prioridade;
 }
-
 

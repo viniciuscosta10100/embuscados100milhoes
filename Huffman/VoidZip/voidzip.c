@@ -1,20 +1,22 @@
-#include "funcoes_huffman.h"
+#include "huffman.h"
 
 int main(){
 	int opcao;
-	char endereco[50];
+	char nomearquivo[50];
 	printf("1- Compactar\n2- Descompactar\nOpc: ");
 	scanf("%d", &opcao);
 	switch(opcao){
 		case 1:
 			printf("Digite o endereco do arquivo a ser compactado: ");
-			scanf("%s", endereco);
-			compactar(endereco);
+			scanf("%s", nomearquivo);
+			printf("Iniciando processo...\n");
+			compactar(nomearquivo);
 			break;
 		case 2:
-			printf("Digite o endereco do arquivo .huff: ");
-			scanf("%s", endereco);
-			descompactar(endereco);
+			printf("Digite o endereco do arquivo de saida: ");
+			scanf("%s", nomearquivo);
+			printf("Iniciando processo...\n");
+			descompactar(nomearquivo);
 			break;
 		default:
 			printf("Opcao invalida!");

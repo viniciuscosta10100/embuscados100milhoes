@@ -1,12 +1,10 @@
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
+#include "hashtable_frequency.h"
 
 #define TAM_HTABLE 256
 typedef struct node{
 	unsigned char letra;
 	int frequencia;
-	char huffbin[8];
+	char huffbin[30];
 }Node;
 
 typedef struct hashtable{
@@ -34,23 +32,6 @@ int getTamHTable(){
 
 void addCFrequency(HTable *table, unsigned char c){
 	table->elementos[c]->frequencia++;
-}
-
-void addFrequency(HTable * table, unsigned char *strOrdenada, int strSize){
-	unsigned char c, c1;
-	int cont=0, i;
-	c1 = strOrdenada[0];
-	for(i=1; i<strSize; i++){
-		c = strOrdenada[i];
-		if(c != c1 && c1>=0){
-			table->elementos[c1]->frequencia += cont;
-			cont = 1;
-		}else{
-			cont++;
-		}
-		c1 = c;
-	}
-	table->elementos[c1]->frequencia += cont;
 }
 
 void addCharBits(HTable *table, unsigned char c, char *bits){
