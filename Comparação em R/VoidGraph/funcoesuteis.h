@@ -3,11 +3,10 @@
 
 #include <stdlib.h>
 #define TAM_NUM_MAX 100000
-#define ELEMENTOS_LIMITES 1000000
 
 struct amostra{
-    int array[ELEMENTOS_LIMITES];
-    int trocas[ELEMENTOS_LIMITES];
+    int *array;
+    int *trocas;
 };
 typedef struct amostra amostra;
 
@@ -17,7 +16,7 @@ int right(int i);
 
 void swap(int *hp,int i,int j);
 
-amostra* criarAmostra();
+amostra* criarAmostra(int num_de_elementos);
 
 void criarArrayDesordenado(int *vetor,int size);
 

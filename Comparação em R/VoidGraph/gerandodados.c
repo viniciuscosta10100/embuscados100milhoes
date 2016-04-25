@@ -23,8 +23,8 @@ int gerandoComparacoesBarPlot(int num_de_elementos){
     amostra *Bubblesort[3];
     amostra *Heapsort[3];
     for (i = 0 ; i < 3 ; i++){
-        Bubblesort[i] = criarAmostra();
-        Heapsort[i] = criarAmostra();
+        Bubblesort[i] = criarAmostra(num_de_elementos);
+        Heapsort[i] = criarAmostra(num_de_elementos);
     }
     for (i = 0 ; i < 3 ; i++){
         efficiencytest(Bubblesort[i],Heapsort[i],i,num_de_elementos);
@@ -39,8 +39,8 @@ int gerandoComparacoesLinePlot(int num_lim_de_elementos){
 	amostra *Bubblesort[3];
 	amostra *Heapsort[3];
 	for (i = 0 ; i < 3 ; i++){
-	    Bubblesort[i] = criarAmostra();
-	    Heapsort[i] = criarAmostra();
+	    Bubblesort[i] = criarAmostra(num_lim_de_elementos);
+	    Heapsort[i] = criarAmostra(num_lim_de_elementos);
 	}
 	for (i = 0 ; i < 3 ; i++){
 		for (j = 0 ; j < num ; j+=100){

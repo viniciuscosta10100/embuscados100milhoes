@@ -1,4 +1,4 @@
     Bubblesort Heapsort
-Crescente 0 4354
-Decrescente 124750 3676
-Aleatório 61562 4019
+Crescente 0 9708
+Decrescente 499500 8316
+Aleatório 248145 9026
