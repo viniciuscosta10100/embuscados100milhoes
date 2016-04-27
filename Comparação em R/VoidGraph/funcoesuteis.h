@@ -6,7 +6,7 @@
 
 struct amostra{
     int *array;
-    int *trocas;
+    long long int *trocas;
 };
 typedef struct amostra amostra;
 

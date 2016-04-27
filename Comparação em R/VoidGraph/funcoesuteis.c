@@ -14,7 +14,7 @@ void swap(int *hp,int i,int j){
 amostra* criarAmostra(int num_de_elementos){
     amostra* newamostra = (amostra*) malloc(sizeof(amostra));
     newamostra->array = (int*) malloc(num_de_elementos*sizeof(int));
-    newamostra->trocas = (int*) malloc(num_de_elementos*sizeof(int));
+    newamostra->trocas = (long long int*) malloc(num_de_elementos*sizeof(long long int));
     return newamostra;
 }
 void criarArrayDesordenado(int *vetor,int size){

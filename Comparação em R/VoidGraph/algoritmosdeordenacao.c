@@ -1,22 +1,22 @@
 #include "algoritmosdeordenacao.h"
 
-int bubblesortTest (int *vetor, int size){
-    int trocas = 0;
+long long int bubblesortTest (int *vetor, int size){
+    long long int comparacoes = 0;
     int i,j,aux;
     for (i = size-1 ; i>0 ; i--){
         for(j=0 ; j<i ; j++){
+        	comparacoes++;
             if (vetor[j] > vetor[j+1]){
-                trocas++;
                 aux=vetor[j];
                 vetor[j] = vetor[j+1];
                 vetor[j+1] = aux;
             }
         }
     }
-    return trocas;
+    return comparacoes;
 }
-int max_heapfy(int *hp,int i,int size_hp){
-    int trocas = 0;
+long long int max_heapfy(int *hp,int i,int size_hp){
+    long long int comparacoes = 0;
     int largest;
     int l = left(i);
     int r = right(i);
@@ -30,33 +30,32 @@ int max_heapfy(int *hp,int i,int size_hp){
         largest = r;
     }
     if (largest != i){
-        trocas++;
+        comparacoes++;
         swap(hp,i,largest);
-        trocas+=max_heapfy(hp,largest,size_hp);
+        comparacoes+=max_heapfy(hp,largest,size_hp);
     }
-    return trocas;
+    return comparacoes;
 }
 
-int buildmaxHeap(int *vetor,int size){
+long long int buildmaxHeap(int *vetor,int size){
     int i;
-    int trocas = 0;
+    long long int comparacoes = 0;
     for (i = (size/2) ; i >= 1 ; i--){
-        trocas+=max_heapfy(vetor,i,size);
+        comparacoes+=max_heapfy(vetor,i,size);
     }
-    return trocas;
+    return comparacoes;
 }
 
-int heapsort(int *vetor,int size){
-    int i,aux,tam;
-    int trocas = 0;
+long long int heapsort(int *vetor,int size){
+    int i,tam;
+    long long int comparacoes = 0;
     tam = size;
-    trocas+=buildmaxHeap(vetor,size);
+    comparacoes+=buildmaxHeap(vetor,size);
     for(i = tam ; i >=2 ; i--){
         swap(vetor,1,i);
         tam--;
-        aux = max_heapfy(vetor,1,tam);
-        trocas+=aux;
-        trocas++;
+        comparacoes+=max_heapfy(vetor,1,tam);
+        comparacoes++;
     }
-    return trocas;
+    return comparacoes;
 }

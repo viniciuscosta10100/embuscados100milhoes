@@ -3,12 +3,12 @@
 
 #include "funcoesuteis.h"
 
-int bubblesortTest (int *vetor, int size);
+long long int bubblesortTest (int *vetor, int size);
 
-int max_heapfy(int *hp,int i,int size_hp);
+long long int max_heapfy(int *hp,int i,int size_hp);
 
-int buildmaxHeap(int *vetor,int size);
+long long int buildmaxHeap(int *vetor,int size);
 
-int heapsort(int *vetor,int size);
+long long int heapsort(int *vetor,int size);
 
 #endif /* ALGORITMOSDEORDENACAO_H__*/
