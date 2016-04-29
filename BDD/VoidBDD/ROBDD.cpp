@@ -1,26 +1,15 @@
-#include<bits/stdc++.h>
-#ifndef NULL
-#define NULL   ((void *) 0)
-#endif
 
-using  namespace std;
-std::vector<struct arvore*> lista_node;//
-std::map<char,int> variaveis;
-std::map<char,int> valores;
+vector<struct arvore*> lista_node;//
+map<char,int> variaveis;
+map<char,int> valores;
 map<int,int> hash_table;
 int inicio=0;
+Arvore* verdadeiro;
+Arvore* falso ;
 
-struct arvore{
-    char valor;
-    struct arvore* esq;
-    struct arvore* dir;
-};
-struct arvore* verdadeiro;
-struct arvore* falso ;
-
-struct arvore* criar_terminal(char saida){//criar terminais do tipo 1 e 0
-    struct arvore* terminal = (struct arvore*) malloc(sizeof(struct arvore));
-    terminal->valor=saida;
+Arvore* criar_terminal(char saida){//criar terminais do tipo 1 e 0
+    Arvore* terminal = (Arvore*) malloc(sizeof(Arvore));
+    terminal->variavel=saida;
     terminal->dir=NULL;
     terminal->esq=NULL;
     return terminal;
@@ -29,33 +18,26 @@ void iniciar_terminais(){
      verdadeiro=criar_terminal('1');
      falso = criar_terminal('0');
 }
-struct arvore* RTD(struct arvore* BDD){//remover terminais duplicados
+Arvore* C1(Arvore* BDD){//remover terminais duplicados
 
-    if(BDD->valor!='1'&&BDD->valor!='0'){
-            BDD->esq=RTD(BDD->esq);
-            BDD->dir=RTD(BDD->dir);
+    if(BDD->variavel!='1'&&BDD->variavel!='0'){
+            BDD->esq=C1(BDD->esq);
+            BDD->dir=C1(BDD->dir);
             return BDD;
     }
-    else if(BDD->valor=='1'){
+    else if(BDD->variavel=='1'){
         free(BDD);
         return verdadeiro;
     }
-    else if(BDD->valor=='0'){
+    else if(BDD->variavel=='0'){
         free(BDD);
         return falso;
     }
 }
-void liberar_node(struct arvore* node){
-    if(node!=NULL){
-        liberar_node(node->esq);
-        liberar_node(node->dir);
-        free(node);
-    }
-}
-int comparar_nodes(struct arvore* node1,struct arvore* node2){
+int comparar_nodes(Arvore* node1,Arvore* node2){
     if(node1!=NULL||node2!=NULL){
         if(node1!=NULL&&node2!=NULL){
-            if(node1->valor==node2->valor){
+            if(node1->variavel==node2->variavel){
                 return comparar_nodes(node1->esq,node2->esq) & comparar_nodes(node1->dir,node2->dir);
             }
         }
@@ -63,9 +45,9 @@ int comparar_nodes(struct arvore* node1,struct arvore* node2){
     }
     return 1;
 }
+Arvore* BuscarNodeLista(Arvore* node){
+    vector<Arvore*>::iterator it=lista_node.begin();
 
-struct arvore* BuscarNodeLista(struct arvore* node){
-    vector<struct arvore*>::iterator it=lista_node.begin();
     for(it;it!=lista_node.end();++it){
         if(comparar_nodes(node,*it)){
             return *it;
@@ -74,46 +56,60 @@ struct arvore* BuscarNodeLista(struct arvore* node){
     lista_node.push_back(node);
     return node;
 }
-struct arvore* RnTD(struct arvore* BDD){ ///remover não-terminais duplicados
+Arvore* C3(Arvore* BDD){ ///remover nï¿½o-terminais duplicados
     if(BDD!=NULL){
-        struct arvore* aux;
-        aux=BuscarNodeLista(BDD);//verificar se ja não teve um node igual ao BDD e o retorna se não retotorna o BDD
+        Arvore* aux;
+        aux=BuscarNodeLista(BDD);//verificar se ja nï¿½o teve um node igual ao BDD e o retorna se nï¿½o retotorna o BDD
         if(aux!=BDD){
-           // liberar_node(BDD);
+            continuar=1;
+            free(BDD);
             return aux;
         }
-        BDD->esq=RnTD(BDD->esq);
-        BDD->dir=RnTD(BDD->dir);
+        BDD->esq=C3(BDD->esq);
+        BDD->dir=C3(BDD->dir);
         return BDD;
     }
 }
-struct arvore* RTR(struct arvore* node){//remover testes reduntantes
+Arvore* C2(Arvore* node){//remover testes reduntantes
     if(node!=verdadeiro&&node!=falso){
-        if(node->esq==node->dir)
-            return node->esq;
+        if(node->esq==node->dir){
+            Arvore* aux=node->esq;
+            continuar=1;
+            free(node);
+            return aux;
+        }
         else{
-            node->esq=RTR(node->esq);
-            node->dir=RTR(node->dir);
+            node->esq=C2(node->esq);
+            node->dir=C2(node->dir);
             return node;
         }
     }
 }
-char percorrer_ROBDD(struct arvore* BDD){
+char percorrer_ROBDD(Arvore* BDD){
     if(BDD!=verdadeiro&&BDD!=falso){
-        if(valores[BDD->valor]==1)
+        if(valores[BDD->variavel]==1)
                 return percorrer_ROBDD(BDD->dir);
-        else if(valores[BDD->valor]==0)
+        else if(valores[BDD->variavel]==0)
                 return percorrer_ROBDD(BDD->esq);
         else
             printf("erro de valores na variaveis\n");
     }
     else {
-        return BDD->valor;
+        return BDD->variavel;
     }
 }
-void usar_ROBDD(struct arvore* BDD){
+void carregarvariaveis(Arvore* BDD){
+    if(BDD!=verdadeiro&&BDD!=falso)
+    {
+        variaveis[BDD->variavel]=1;
+        carregarvariaveis(BDD->esq);
+        carregarvariaveis(BDD->dir);
+    }
+}
+void usar_ROBDD(Arvore* BDD){
     int aux;
     char aux2;
+    carregarvariaveis(BDD);
     map<char,int>::iterator it;
     printf("encontrar valores com ROBDD criado? S/N");
     scanf("%c",&aux2);
@@ -130,55 +126,5 @@ void usar_ROBDD(struct arvore* BDD){
         scanf("%c",&aux2);
     }
 }
-void aux_imprimir(struct arvore* node)
-{
-    if(node!=NULL){
-            if(hash_table[(int)node]==1){
-               // printf("ja foi %c ",n->valor);
-               // printf("ponteiros: %d\n",node);
-            }
-            else{
-                printf("%c ",node->valor);
-                aux_imprimir(node->esq);
-                aux_imprimir(node->dir);
-                hash_table[(int)node]=1;
-            }
-        }
-}
-void imprimir(struct arvore* node){
-    hash_table.clear();//hash usada na função imprimir
-    aux_imprimir(node);
-}
-char string_to_int(string texto,int inicio,int fim){
-    if(fim-inicio>1)
-        printf("erro de tamanho de variavel\n");
 
-    if(texto[inicio]!='1'&&texto[inicio]!='0')
-       variaveis[texto[inicio]]=1;
 
-    return texto[inicio];
-}
-struct arvore* criar_arvore(string stg_arvore){
-    int s1,s2,valor;
-    struct arvore* avr=NULL;
-    while(stg_arvore[inicio]==' ')
-        inicio++;
-    if(stg_arvore[inicio]!='(')
-        printf("%d erro de entrada, formato estranho\n",inicio);
-    inicio++;
-    if(stg_arvore[inicio]!=')'){
-        s1=inicio;
-        while(stg_arvore[inicio]!='(')
-            inicio++;
-        s2=inicio-1;
-        valor=string_to_int(stg_arvore,s1,s2);
-        avr=(struct arvore*) malloc(sizeof(struct arvore));
-        avr->valor=valor;
-        avr->esq=criar_arvore(stg_arvore);
-        avr->dir=criar_arvore(stg_arvore);
-        inicio++;
-    }
-    else
-        inicio++;
-    return avr;
-}
