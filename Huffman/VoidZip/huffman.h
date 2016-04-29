@@ -6,6 +6,7 @@
  * gerar o arquivo compactado.
  * */
 void compactar(char* urlArquivo);
+
 /*A função descompactar recebe uma string,
  * que será o nome do arquivo gerado após descompactar,
  * não retorna nada, e tem como objetivo
