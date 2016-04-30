@@ -35,7 +35,9 @@ int gerandoComparacoesBarPlot(int num_de_elementos){
 }
 int gerandoComparacoesLinePlot(int num_lim_de_elementos){
 	int i,j;
-	int num = num_lim_de_elementos+1;
+	int begin;
+	int marcador;
+	int num = num_lim_de_elementos;
 	amostra *Bubblesort[3];
 	amostra *Heapsort[3];
 	for (i = 0 ; i < 3 ; i++){
@@ -43,8 +45,19 @@ int gerandoComparacoesLinePlot(int num_lim_de_elementos){
 	    Heapsort[i] = criarAmostra(num_lim_de_elementos);
 	}
 	for (i = 0 ; i < 3 ; i++){
-		for (j = 0 ; j < num ; j+=100){
+		marcador = -1;
+		begin = 10;
+		Bubblesort[i]->trocas[num] = -1;
+		for (j = 0 ; j <= num ; j+=begin){
 			efficiencytest(Bubblesort[i],Heapsort[i],i,j);
+			marcador++;
+			if (marcador == 10){
+				begin = begin * marcador;
+				marcador = 1;
+			}
+		}
+		if (Bubblesort[i]->trocas[num] == -1){
+			efficiencytest(Bubblesort[i],Heapsort[i],i,num);
 		}
 	}
 	printLinePlot(Bubblesort,Heapsort,num);
