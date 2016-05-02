@@ -27,7 +27,7 @@ int folha(ArvoreHuff *arvore){
 }
 
 void pre_order(ArvoreHuff *arvore, FILE *arquivo, int *tam){
-	if(arvore != NULL){//printf("%c - %d  %d", arvore->valor,arvore->valor,folha(arvore));system("pause");
+	if(arvore != NULL){
 		if(arvore->valor == 13){
 			fprintf(arquivo, "\\&");
 			//printf("\\&");
@@ -51,9 +51,9 @@ ArvoreHuff *f_generate_tree(){
 	ArvoreHuff *a1, *a2;
 	if(*preorder_string == 42){
 		preorder_string = preorder_string+1;
-		a1 = f_generate_tree(preorder_string);
+		a1 = f_generate_tree();
 		preorder_string = preorder_string+1;
-		a2 = f_generate_tree(preorder_string);
+		a2 = f_generate_tree();
 		return newArvore('*', a1, a2);
 	}else{
 		if(*preorder_string == '\\'){
