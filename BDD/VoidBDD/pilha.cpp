@@ -6,8 +6,7 @@ typedef struct pilha{
 }Pilha;
 Pilha* criar_pilha(){
 
-        Pilha* aux= NULL;
-        return aux;
+        return NULL;
 }
 Pilha* empilhar(Pilha* Topo, Arvore* avr)
 {
@@ -27,18 +26,15 @@ Pilha* desempilhar(Pilha** Topo){
         *Topo=(*Topo)->debaixo;
     }
     return aux;
-
 }
-int tamanho(Pilha* Topo)
+int tamanho_pilha(Pilha* Topo)
 {
     int i=0;
     while(Topo!=NULL)
+
     {
         i++;
         Topo=Topo->debaixo;
     }
     return i;
 }
-
-
-
