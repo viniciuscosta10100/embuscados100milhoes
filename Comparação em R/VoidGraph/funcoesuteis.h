@@ -2,7 +2,7 @@
 #define FUNCOESUTEIS_H__
 
 #include <stdlib.h>
-#define TAM_NUM_MAX 100000
+#include <time.h>
 
 struct amostra{
     int *array;

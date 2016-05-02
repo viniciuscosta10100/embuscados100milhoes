@@ -30,7 +30,7 @@ long long int max_heapfy(int *hp,int i,int size_hp){
         largest = r;
     }
     if (largest != i){
-        comparacoes++;
+    	comparacoes++;
         swap(hp,i,largest);
         comparacoes+=max_heapfy(hp,largest,size_hp);
     }

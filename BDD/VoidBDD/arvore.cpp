@@ -1,4 +1,3 @@
-
 typedef struct arvore{
     char variavel;
     struct arvore* esq;
@@ -23,15 +22,6 @@ Arvore* novo_node_nao_folha(char variavel)
     aux->dir=novo_node_folha('1');
     aux->esq=novo_node_folha('0');
     return aux;
-}
-void imprimir_preOrdem(Arvore* avr)
-{
-    if(avr!=NULL)
-    {
-        printf("%c ",avr->variavel);
-        imprimir_preOrdem(avr->esq);
-        imprimir_preOrdem(avr->dir);
-    }
 }
 void NegarArvore(Arvore* avr){
     if(avr!=NULL)
