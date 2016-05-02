@@ -4,7 +4,6 @@
 
 void printBarPlot(amostra **bubble,amostra **heap,int num_de_elementos){
     int i;
-    //system("pause");
     char titulo[]={"BARPLOT.txt"};
     FILE *myfile = fopen(titulo,"w");
     fprintf(myfile,"    Bubblesort Heapsort\n");

@@ -4,19 +4,19 @@
 #include <conio.h>
 void efficiencytest(amostra *bubble,amostra *heap,int gatilho,int num_de_elementos){
 	if (gatilho == 0){
-		criarArrayCrescente(bubble->array,num_de_elementos);
-        criarArrayCrescente(heap->array,num_de_elementos);
+		criarArrayCrescente(bubble->array,num_de_elementos+1);
+        criarArrayCrescente(heap->array,num_de_elementos+1);
     }
     else if(gatilho == 1){
-        criarArrayDecrescente(bubble->array,num_de_elementos);
-        criarArrayDecrescente(heap->array,num_de_elementos);
+        criarArrayDecrescente(bubble->array,num_de_elementos+1);
+        criarArrayDecrescente(heap->array,num_de_elementos+1);
     }
     else{
-       criarArrayDesordenado(bubble->array,num_de_elementos);
-       criarArrayDesordenado(heap->array,num_de_elementos);
+       criarArrayDesordenado(bubble->array,num_de_elementos+1);
+       criarArrayDesordenado(heap->array,num_de_elementos+1);
     }
-    bubble->trocas[num_de_elementos] = bubblesortTest(bubble->array,num_de_elementos);
-    heap->trocas[num_de_elementos] = heapsort(heap->array,num_de_elementos);
+	bubble->trocas[num_de_elementos] = bubblesortTest(bubble->array,num_de_elementos);
+	heap->trocas[num_de_elementos] = heapsort(heap->array,num_de_elementos);
 }
 int gerandoComparacoesBarPlot(int num_de_elementos){
     int i;
@@ -29,7 +29,6 @@ int gerandoComparacoesBarPlot(int num_de_elementos){
     for (i = 0 ; i < 3 ; i++){
         efficiencytest(Bubblesort[i],Heapsort[i],i,num_de_elementos);
     }
-
     printBarPlot(Bubblesort,Heapsort,num_de_elementos);
     return 1;
 }
