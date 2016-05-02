@@ -31,7 +31,7 @@ ArvoreHuff *dequeue(PQueue *queue);
 
 /* A função unicoElemento recebe um ponteiro de uma estrutura
  * do tipo PQueue, e retorna um inteiro, onde esse inteiro
- * será 1 ou 0, para se a fila estiver vazia ou não,
+ * será 1 ou 0, para se a fila estiver com um elemento ou não,
  * respectivamente.
  * */
 int unicoElemento(PQueue *queue);
