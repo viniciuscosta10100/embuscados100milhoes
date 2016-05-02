@@ -3,6 +3,12 @@
 ArvoreHuff * criarArvore(PQueue *queue){
 	ArvoreHuff *a1, *a2, *novaArvore;
 	int p1, p2;
+	if(unicoElemento(queue)){
+		p1 = getPrioridade(queue);
+		a1 = dequeue(queue);
+		novaArvore = newArvore('*',a1,NULL);
+		enqueue(queue,novaArvore,p1);
+	}
 	while(!unicoElemento(queue)){
 		p1 = getPrioridade(queue);
 		a1 = dequeue(queue);
